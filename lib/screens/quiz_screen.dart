@@ -11,7 +11,10 @@ class QuizScreen extends StatelessWidget {
           FlatButton(
             onPressed: (){},
             child:Text(
-              "Skip"
+              "Skip",
+              style: TextStyle(
+                color:Colors.white
+              ),
             ),
           ),
         ],

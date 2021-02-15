@@ -27,6 +27,7 @@ class WelcomeScreen extends StatelessWidget {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: [
+
                   Spacer(flex: 2,),
                   Text(
                     "Let's Play Quiz,",
