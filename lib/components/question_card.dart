@@ -27,7 +27,7 @@ class QuestionCard extends StatelessWidget {
           Text(question.question),
           SizedBox(height: 10.0),
           ...List.generate(
-          // 全問題数
+          // 選択肢
           4, (index) => Option(
             index:index,
             text: question.options[index],

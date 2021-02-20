@@ -34,18 +34,20 @@ class Body extends StatelessWidget {
               SizedBox(height:10),
               Padding(
                 padding: EdgeInsets.all(10.0),
-                child: Text.rich(
-                    TextSpan(
-                      text: "Question 1",
-                      style: Theme.of(context).textTheme.headline4.copyWith(color:Colors.green),
-                      children: [
-                        TextSpan(
-                        text: "/10",
-                        style: Theme.of(context).textTheme.headline5.copyWith(color:Colors.green),
-                        ),
-                      ],
+                child: Obx(
+                  () => Text.rich(
+                      TextSpan(
+                        text: "Question " + _questionController.currentQuestionNum.value.toString(),
+                        style: Theme.of(context).textTheme.headline4.copyWith(color:Colors.green),
+                        children: [
+                          TextSpan(
+                          text: "/" + _questionController.questions.length.toString(),
+                          style: Theme.of(context).textTheme.headline5.copyWith(color:Colors.green),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                ),
                 ),
               Divider(
                 thickness: 3,
@@ -53,10 +55,12 @@ class Body extends StatelessWidget {
               ),
               Expanded(
                 child: PageView.builder(
+                  controller: _questionController.pageController,
                   // 全問題数を定義（コントローラーから取得）
-                  itemCount: 4,
+                  itemCount: _questionController.questions.length,
                   // スクロールしないように設定
                   physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: _questionController.updateNum,
                   // 問題部分は別ウィジェットで管理
                   itemBuilder: (context, index) => QuestionCard(
                     question: _questionController.questions[index],

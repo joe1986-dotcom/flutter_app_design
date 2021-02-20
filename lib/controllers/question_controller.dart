@@ -31,8 +31,8 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
   int get selectedAns => _selectedAns;
 
   // 現在の問題数
-  int _currentQuestionNum = 0;
-  int get currentQuestionNum => _currentQuestionNum;
+  RxInt _currentQuestionNum = 1.obs;
+  RxInt get currentQuestionNum => _currentQuestionNum;
   // 現在の正解数
   int _correctNum = 0;
   int get correctNum => _correctNum;
@@ -51,8 +51,9 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
     });
 
     // アニメーションをスタートする
-    _animationController.forward();
+    _animationController.forward().whenComplete(nextQuestion);
     _pageController = PageController();
+    super.onInit();
 
   }
 
@@ -61,8 +62,8 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
   // region 終了
   @override
   void onClose() {
-    // TODO: implement onClose
     _pageController.dispose();
+    _animationController.dispose();
     super.onClose();
   }
 
@@ -84,6 +85,8 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
       _correctNum++;
     }
 
+    _animationController.stop();
+
     update();
     // 3秒待って次の問題へ遷移
     Future.delayed(Duration(seconds: 3),(){
@@ -102,6 +105,9 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
         curve: Curves.ease,
       );
 
+      _animationController.reset();
+
+      _animationController.forward().whenComplete(nextQuestion);
 
     }
 
@@ -113,6 +119,9 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
   // 次の問題を出題
 
   // 現在の問題番号を更新
+  void updateNum(int index){
+    this._currentQuestionNum.value = index + 1;
+  }
 
   // endregion
 
