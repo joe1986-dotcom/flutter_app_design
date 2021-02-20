@@ -31,7 +31,7 @@ class Option extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("aaa"),
+                Text(text),
                 Container(
                   width: 26,
                   height: 26,

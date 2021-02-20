@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_design/controllers/question_controller.dart';
+import 'package:get/get.dart';
 
 class ProgressBar extends StatelessWidget {
   @override
@@ -14,41 +16,51 @@ class ProgressBar extends StatelessWidget {
           width: 3,
         ),
       ),
-      child: Stack(
-        children: [
-          Container(
-            width:double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF46A0AE), Color(0xFF00FFCB)],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
-              borderRadius: BorderRadius.circular(50),
-            ),
-          ),
-          Positioned.fill(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "30 sec",
-                    style: TextStyle(
-                      color: Colors.white,
+      child: GetBuilder<QuestionController>(
+        init: QuestionController(),
+        builder: (qnController) =>
+            Stack(
+          children: [
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                  width: constraints.maxWidth * qnController.animation.value,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF46A0AE), Color(0xFF00FFCB)],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
                     ),
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  Icon(
-                    Icons.timer,
-                    color: Colors.black,
-                    size: 20.0,
-                  ),
-                ],
+                );
+
+              }
+            ),
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      (qnController.animation.value * 60).round().toString() + " sec",
+                      // 10.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Icon(
+                      Icons.timer,
+                      color: Colors.white,
+                      size: 20.0,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

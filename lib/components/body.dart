@@ -58,7 +58,9 @@ class Body extends StatelessWidget {
                   // スクロールしないように設定
                   physics: NeverScrollableScrollPhysics(),
                   // 問題部分は別ウィジェットで管理
-                  itemBuilder: (context, index) => QuestionCard(),
+                  itemBuilder: (context, index) => QuestionCard(
+                    question: _questionController.questions[index],
+                  ),
                 ),
 
               ),
