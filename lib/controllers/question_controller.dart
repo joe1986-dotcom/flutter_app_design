@@ -36,6 +36,10 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
   // 現在の正解数
   int _correctNum = 0;
   int get correctNum => _correctNum;
+
+  // 回答済みか判定するフラグ
+  bool _isAnswered = false;
+  bool get isAnswered => _isAnswered;
   // endregion
 
   // region 初期化
@@ -62,9 +66,10 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
   // region 終了
   @override
   void onClose() {
+
+    super.onClose();
     _pageController.dispose();
     _animationController.dispose();
-    super.onClose();
   }
 
 
@@ -75,12 +80,14 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
 
   // 正解チェック
   void checkAns(Question question, int selectedIndex){
-    // 正解
-    int correctAnsIndex = question.correctAns;
-    // 選択
-    int currentSelectedIndex = selectedIndex;
+    // 回答フラグを変更
+    _isAnswered = true;
 
-    if(correctAnsIndex == currentSelectedIndex){
+    this._selectedAns = selectedIndex;
+
+    this._currentCorrectAns = question.correctAns;
+
+    if(_currentCorrectAns == _selectedAns){
       // 正解数を1上げる
       _correctNum++;
     }
@@ -99,16 +106,16 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
   void nextQuestion(){
     // 問題数が最後か判定
     if(_questions.length != currentQuestionNum){
+      _isAnswered = false;
+
       // 最後でなければ画面を変える
       _pageController.nextPage(
         duration: Duration(milliseconds: 250),
         curve: Curves.ease,
+
       );
-
       _animationController.reset();
-
       _animationController.forward().whenComplete(nextQuestion);
-
     }
 
 
