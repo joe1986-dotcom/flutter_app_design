@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_design/models/question.dart';
+import 'package:flutter_app_design/screens/score_screen.dart';
 import 'package:get/get.dart';
 
 class QuestionController extends GetxController with SingleGetTickerProviderMixin {
@@ -105,7 +106,7 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
 
   void nextQuestion(){
     // 問題数が最後か判定
-    if(_questions.length != currentQuestionNum){
+    if(currentQuestionNum != _questions.length){
       _isAnswered = false;
 
       // 最後でなければ画面を変える
@@ -116,10 +117,12 @@ class QuestionController extends GetxController with SingleGetTickerProviderMixi
       );
       _animationController.reset();
       _animationController.forward().whenComplete(nextQuestion);
+    }else{
+      // 最後であれば別画面に遷移
+      Get.to(ScoreScreen());
     }
 
 
-    // 最後であれば別画面に遷移
   }
 
 
